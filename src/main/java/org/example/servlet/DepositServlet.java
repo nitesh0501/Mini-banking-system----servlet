@@ -24,8 +24,7 @@ public class DepositServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             out.println("Login first!");
-            out.close();
-            return;
+            
         }
 
         int userId = (Integer) session.getAttribute("userId");
@@ -36,8 +35,7 @@ public class DepositServlet extends HttpServlet {
             depositAmount = Double.parseDouble(req.getParameter("amount"));
             if (depositAmount <= 0) {
                 out.println("Invalid deposit amount!");
-                out.close();
-                return;
+           
             }
         } catch (NumberFormatException e) {
             out.println("Enter a valid number!");
@@ -48,7 +46,7 @@ public class DepositServlet extends HttpServlet {
       
         try (Connection conn = Dbutil.getConnection()) {
 
-            // 3a. Check if user exists
+         
             try (PreparedStatement checkStmt = conn.prepareStatement(
                     "SELECT id FROM users WHERE id = ?")) {
                 checkStmt.setInt(1, userId);
@@ -62,9 +60,9 @@ public class DepositServlet extends HttpServlet {
             }
 
             
-            conn.setAutoCommit(false); // start transaction
+            conn.setAutoCommit(false); 
             try {
-                // Update balance
+              
                 try (PreparedStatement updateStmt = conn.prepareStatement(
                         "UPDATE users SET balance = balance + ? WHERE id = ?")) {
                     updateStmt.setDouble(1, depositAmount);
@@ -80,10 +78,10 @@ public class DepositServlet extends HttpServlet {
                     insertStmt.executeUpdate();
                 }
 
-                conn.commit(); // commit if both succeed
+                conn.commit(); 
                 out.println("Deposit successful!");
             } catch (SQLException e) {
-                conn.rollback(); // rollback if anything fails
+                conn.rollback(); 
                 e.printStackTrace();
                 out.println("Deposit failed!");
             } 
