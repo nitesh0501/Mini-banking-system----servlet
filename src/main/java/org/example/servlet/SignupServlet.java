@@ -29,7 +29,7 @@ public class SignupServlet extends HttpServlet {
         if (name == null || email == null || password == null || accountNo == null ||
                 name.isEmpty() || email.isEmpty() || password.isEmpty() || accountNo.isEmpty()) {
             out.println("All fields are required");
-            return;
+         
         }
 
 
