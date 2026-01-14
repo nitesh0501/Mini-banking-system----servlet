@@ -39,8 +39,7 @@ public class DepositServlet extends HttpServlet {
             }
         } catch (NumberFormatException e) {
             out.println("Enter a valid number!");
-            out.close();
-            return;
+         
         }
 
       
@@ -53,8 +52,7 @@ public class DepositServlet extends HttpServlet {
                 try (ResultSet rs = checkStmt.executeQuery()) {
                     if (!rs.next()) {
                         out.println("User not found!");
-                        out.close();
-                        return;
+                      
                     }
                 }
             }
