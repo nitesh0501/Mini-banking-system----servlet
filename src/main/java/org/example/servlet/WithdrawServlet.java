@@ -20,35 +20,29 @@ public class WithdrawServlet extends HttpServlet {
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
 
-        // 1. Session check
+       
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             out.println("Login first!");
-            out.close();
-            return;
         }
 
         int userId = (Integer) session.getAttribute("userId");
 
-        // 2. Withdraw amount validation
+
         double withdrawAmount;
         try {
             withdrawAmount = Double.parseDouble(req.getParameter("amount"));
             if (withdrawAmount <= 0) {
                 out.println("Invalid withdraw amount!");
-                out.close();
-                return;
             }
         } catch (NumberFormatException e) {
             out.println("Enter a valid number!");
-            out.close();
-            return;
         }
 
-        // 3. Database operations
+        
         try (Connection conn = Dbutil.getConnection()) {
 
-            // 3a. Check current balance
+        
             double currentBalance = 0;
             try (PreparedStatement checkStmt = conn.prepareStatement(
                     "SELECT balance FROM users WHERE id = ?")) {
@@ -58,22 +52,18 @@ public class WithdrawServlet extends HttpServlet {
                         currentBalance = rs.getDouble("balance");
                     } else {
                         out.println("User not found!");
-                        out.close();
-                        return;
                     }
                 }
             }
 
             if (currentBalance < withdrawAmount) {
                 out.println("Insufficient balance!");
-                out.close();
-                return;
             }
 
-            // 3b. Transaction: Update balance and insert transaction
-            conn.setAutoCommit(false); // start transaction
+            
+            conn.setAutoCommit(false);
             try {
-                // Update balance
+                
                 try (PreparedStatement updateStmt = conn.prepareStatement(
                         "UPDATE users SET balance = balance - ? WHERE id = ?")) {
                     updateStmt.setDouble(1, withdrawAmount);
@@ -81,7 +71,7 @@ public class WithdrawServlet extends HttpServlet {
                     updateStmt.executeUpdate();
                 }
 
-                // Insert transaction
+               
                 try (PreparedStatement insertStmt = conn.prepareStatement(
                         "INSERT INTO transactions (user_id, type, amount) VALUES (?, 'WITHDRAW', ?)")) {
                     insertStmt.setInt(1, userId);
@@ -89,14 +79,14 @@ public class WithdrawServlet extends HttpServlet {
                     insertStmt.executeUpdate();
                 }
 
-                conn.commit(); // commit if both succeed
+                conn.commit();
                 out.println("Withdraw successful!");
             } catch (SQLException e) {
-                conn.rollback(); // rollback if anything fails
+                conn.rollback();
                 e.printStackTrace();
                 out.println("Withdraw failed!");
             } finally {
-                conn.setAutoCommit(true); // restore auto-commit
+                conn.setAutoCommit(true); 
             }
 
         } catch (SQLException e) {
