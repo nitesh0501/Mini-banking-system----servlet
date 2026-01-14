@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 
         if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
             out.println("Email and password must not be empty!");
-            return;
+    
         }
 
         try (Connection conn = Dbutil.getConnection()) {
@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
             if (rs.next()) {
                 String hashedPassword = rs.getString("password");
                 if (BCrypt.checkpw(password, hashedPassword)) {
-                    // Password matches
+                    
                     HttpSession session = req.getSession();
                     session.setAttribute("userId", rs.getInt("id"));
                     session.setAttribute("userName", rs.getString("name"));
