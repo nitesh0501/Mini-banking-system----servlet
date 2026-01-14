@@ -20,7 +20,7 @@ public class DepositServlet extends HttpServlet {
         res.setContentType("text/html");
         PrintWriter out = res.getWriter();
 
-        // 1. Session check
+        
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             out.println("Login first!");
@@ -30,7 +30,7 @@ public class DepositServlet extends HttpServlet {
 
         int userId = (Integer) session.getAttribute("userId");
 
-        // 2. Deposit amount validation
+       
         double depositAmount;
         try {
             depositAmount = Double.parseDouble(req.getParameter("amount"));
@@ -45,7 +45,7 @@ public class DepositServlet extends HttpServlet {
             return;
         }
 
-        // 3. Database operations
+      
         try (Connection conn = Dbutil.getConnection()) {
 
             // 3a. Check if user exists
@@ -61,7 +61,7 @@ public class DepositServlet extends HttpServlet {
                 }
             }
 
-            // 3b. Transaction: Update balance and insert transaction
+            
             conn.setAutoCommit(false); // start transaction
             try {
                 // Update balance
@@ -72,7 +72,7 @@ public class DepositServlet extends HttpServlet {
                     updateStmt.executeUpdate();
                 }
 
-                // Insert transaction
+                
                 try (PreparedStatement insertStmt = conn.prepareStatement(
                         "INSERT INTO transactions (user_id, type, amount) VALUES (?, 'DEPOSIT', ?)")) {
                     insertStmt.setInt(1, userId);
@@ -86,9 +86,7 @@ public class DepositServlet extends HttpServlet {
                 conn.rollback(); // rollback if anything fails
                 e.printStackTrace();
                 out.println("Deposit failed!");
-            } finally {
-                conn.setAutoCommit(true); // restore auto-commit
-            }
+            } 
 
         } catch (SQLException e) {
             e.printStackTrace();
