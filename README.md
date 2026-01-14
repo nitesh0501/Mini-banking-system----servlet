@@ -1,9 +1,12 @@
 Mini-Banking Application
 This project implements a basic banking system,common financial transactions. The application is built using Java Servlets, deployed on Apache Tomcat, and utilizes MySQL as the database management system. 
+
 Key Features
 User Authentication: Secure signup and login processes.
 Account Management: Functionality for depositing and withdrawing funds.
 Transaction Tracking: A dedicated page to view account transaction history. 
+
+
 Technology Stack
 Backend: Java Servlet
 Server: Apache Tomcat
