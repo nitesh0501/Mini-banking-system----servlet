@@ -12,12 +12,12 @@ public class Dbutil {
 
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // explicitly load driver
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
 
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl("jdbc:mysql://localhost:3306/mini_bank");
-            config.setUsername("root");       // your DB username
-            config.setPassword("pass@123");   // your DB password
+            config.setUsername("root");       
+            config.setPassword("pass@123");  
             config.setMaximumPoolSize(10);
             config.setMinimumIdle(2);
 
