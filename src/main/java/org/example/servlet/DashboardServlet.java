@@ -20,8 +20,7 @@ public class DashboardServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
-            out.println("You are not logged in!first.");
-            
+            out.println("You are not logged in!first.");   
         }
 
         int userId = (Integer) session.getAttribute("userId");
