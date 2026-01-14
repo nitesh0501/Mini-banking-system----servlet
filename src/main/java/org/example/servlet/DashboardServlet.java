@@ -20,8 +20,8 @@ public class DashboardServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
-            out.println("You are not logged in! Please <a href='login.html'>login</a> first.");
-            return;
+            out.println("You are not logged in!first.");
+            
         }
 
         int userId = (Integer) session.getAttribute("userId");
@@ -33,10 +33,10 @@ public class DashboardServlet extends HttpServlet {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                out.println("<h2>Welcome, " + rs.getString("name") + "</h2>");
-                out.println("<p>Email: " + rs.getString("email") + "</p>");
-                out.println("<p>Account No: " + rs.getString("account_no") + "</p>");
-                out.println("<p>Balance: ₹" + rs.getDouble("balance") + "</p>");
+                out.println("Welcome, " + rs.getString("name") );
+                out.println("Email: " + rs.getString("email") );
+                out.println("Account No: " + rs.getString("account_no"));
+                out.println("Balance: ₹" + rs.getDouble("balance") );
             } else {
                 out.println("User not found!");
             }
