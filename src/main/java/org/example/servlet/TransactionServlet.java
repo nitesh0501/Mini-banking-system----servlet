@@ -20,7 +20,7 @@ public class TransactionServlet extends HttpServlet {
 
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
-            out.println("You are not logged in! Please <a href='login.html'>login</a> first.");
+            out.println("You are not logged in! Please login first.");
             
         }
 
