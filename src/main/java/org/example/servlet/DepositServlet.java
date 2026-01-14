@@ -24,7 +24,6 @@ public class DepositServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             out.println("Login first!");
-            
         }
 
         int userId = (Integer) session.getAttribute("userId");
@@ -60,7 +59,6 @@ public class DepositServlet extends HttpServlet {
             
             conn.setAutoCommit(false); 
             try {
-              
                 try (PreparedStatement updateStmt = conn.prepareStatement(
                         "UPDATE users SET balance = balance + ? WHERE id = ?")) {
                     updateStmt.setDouble(1, depositAmount);
